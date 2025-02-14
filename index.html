@@ -30,6 +30,18 @@
     <footer>
         <p>© 2025 FoodieFinder. All rights reserved.</p>
     </footer>
-</body>
+<main>
+    <h2>Can't decide what to eat? Let us help!</h2>
+    <button onclick="randomizeFood()">Get a Random Cuisine</button>
+    <p id="result"></p>
+</main>
+<script>
+    const cuisines = ["Italian", "Chinese", "Mexican", "Indian", "Japanese", "Thai", "Greek", "French"];
 
+    function randomizeFood() {
+        const randomIndex = Math.floor(Math.random() * cuisines.length);
+        const randomCuisine = cuisines[randomIndex];
+        document.getElementById('result').innerText = `How about some ${randomCuisine} food?`;
+    }
+</script>
 </html>
