@@ -15,6 +15,7 @@
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="restaurants.html">Restaurants</a></li>
+                <li><a href="dinedecider.html">DineDecider</a></li>
                 <li><a href="profile.html">Profile</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
@@ -27,21 +28,70 @@
         <button>Search</button>
     </section>
 
+    <main>
+        <h2>Can't decide what to eat? Let us help!</h2>
+        <button onclick="randomizeFood()">Get a Random Cuisine</button>
+        <p id="result"></p>
+
+        <!-- Restaurant Quiz Section -->
+        <section id="restaurant-quiz">
+            <h2>Find Your Ideal Restaurant</h2>
+            <form id="quiz-form">
+                <label for="cuisine">Choose Cuisine:</label>
+                <select id="cuisine">
+                    <option value="Italian">Italian</option>
+                    <option value="Mexican">Mexican</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="Indian">Indian</option>
+                    <option value="Japanese">Japanese</option>
+                    <option value="Thai">Thai</option>
+                    <option value="Greek">Greek</option>
+                    <option value="French">French</option>
+                </select>
+                <br>
+                <label for="price">Choose Price Range:</label>
+                <select id="price">
+                    <option value="$">$</option>
+                    <option value="$$">$$</option>
+                    <option value="$$$">$$$</option>
+                </select>
+                <br>
+                <button type="button" onclick="submitQuiz()">Find Restaurant</button>
+            </form>
+            <div id="quiz-results"></div>
+        </section>
+    </main>
+
     <footer>
         <p>© 2025 FoodieFinder. All rights reserved.</p>
     </footer>
-<main>
-    <h2>Can't decide what to eat? Let us help!</h2>
-    <button onclick="randomizeFood()">Get a Random Cuisine</button>
-    <p id="result"></p>
-</main>
-<script>
-    const cuisines = ["Italian", "Chinese", "Mexican", "Indian", "Japanese", "Thai", "Greek", "French"];
 
-    function randomizeFood() {
-        const randomIndex = Math.floor(Math.random() * cuisines.length);
-        const randomCuisine = cuisines[randomIndex];
-        document.getElementById('result').innerText = `How about some ${randomCuisine} food?`;
-    }
-</script>
+    <script>
+        const cuisines = ["Italian", "Chinese", "Mexican", "Indian", "Japanese", "Thai", "Greek", "French"];
+
+        function randomizeFood() {
+            const randomIndex = Math.floor(Math.random() * cuisines.length);
+            const randomCuisine = cuisines[randomIndex];
+            document.getElementById('result').innerText = `How about some ${randomCuisine} food?`;
+        }
+
+        function submitQuiz() {
+            const cuisine = document.getElementById('cuisine').value;
+            const price_range = document.getElementById('price').value;
+
+            fetch('/quiz', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cuisine, price_range })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    let resultsDiv = document.getElementById('quiz-results');
+                    resultsDiv.innerHTML = '<h2>Recommended Restaurants:</h2>' +
+                        data.map(r => `<p><strong>${r.name}</strong> - ${r.address}</p>`).join('');
+                });
+        }
+    </script>
+</body>
+
 </html>
