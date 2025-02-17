@@ -6,11 +6,12 @@ app = Flask(__name__)
 
 # Database Connection
 DB_CONFIG = {
-'host': 'your-database-host',
-'user': 'your-database-user',
-'password': 'your-database-password',
-'database': 'database-name'
+    'host': 'your-rds-endpoint.rds.amazonaws.com',
+    'user': 'your-db-user',
+    'password': 'your-db-password',
+    'database': 'restaurant'
 }
+
 
 def get_restaurants(cuisine, price_range):
     conn = mysql.connector.connect(**DB_CONFIG)
